@@ -35,7 +35,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
     const encrypterStub = makeEncrypter()
     const addAccountRepositoryStub = makeAddAccountRepository()
-    const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub) 
+    const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub)
     return {
         sut,
         encrypterStub,
@@ -84,5 +84,19 @@ describe('DbAddAccount Usecase', () => {
             email: 'valid_email',
             password: 'hased_password'
         })
+    })
+
+    test('Should throw if AddAccountRepository throws', async () => {
+        const { addAccountRepositoryStub, sut } = makeSut()
+        jest.spyOn(addAccountRepositoryStub, 'add').mockImplementationOnce(() => {
+            throw new Error()
+        })
+        const accountData = {
+            name: 'valid_name',
+            email: 'valid_email',
+            password: 'valid_password'
+        }
+        const promise = sut.add(accountData)
+        await expect(promise).rejects.toThrow()
     })
 })

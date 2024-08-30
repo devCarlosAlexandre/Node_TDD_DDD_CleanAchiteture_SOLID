@@ -4,6 +4,7 @@ const config: Config = {
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coverageDirectory: "coverage",
   testEnvironment: "node",
+  preset: '@shelf/jest-mongodb',
   roots: [
     "<rootDir>/src"
   ],
